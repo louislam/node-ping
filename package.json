@@ -20,19 +20,20 @@
     "BlessJah <blessjah@jacekowski.org>",
     "jritsema"
   ],
-  "name": "ping",
+  "name": "@louislam/ping",
   "description": "a simple wrapper for ping",
-  "version": "0.4.2",
+  "version": "10.4.2",
   "homepage": "http://github.com/danielzzz/node-ping",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/danielzzz/node-ping.git"
+    "url": "git://github.com/louislam/node-ping.git"
   },
   "engines": {
     "node": ">=4.0.0"
   },
   "dependencies": {
+    "command-exists": "~1.2.9",
     "q": "1.x",
     "underscore": "^1.12.0"
   },
