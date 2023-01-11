@@ -22,7 +22,7 @@
   ],
   "name": "@louislam/ping",
   "description": "a simple wrapper for ping",
-  "version": "10.4.2",
+  "version": "0.4.2-mod.0",
   "homepage": "http://github.com/danielzzz/node-ping",
   "license": "MIT",
   "repository": {
@@ -62,5 +62,8 @@
     "nyc": "^15.1.0",
     "sinon": "9.2.2"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "files": [
+    "lib/*"
+  ]
 }
