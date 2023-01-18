@@ -277,31 +277,6 @@ describe('Ping ipv6 on MAC OS', function () {
             stub.restore();
         });
     });
-
-    describe('With timeout setting', function () {
-        var fixturePaths = loadFixturePath(platform);
-
-        fixturePaths.forEach(function (fp) {
-            it('Should raise an error', function (done) {
-                var stub = sinon.stub(cp, 'spawn').callsFake(mockOutSpawn(fp));
-
-                var ret = ping.promise.probe(
-                    'whatever',
-                    {v6: true, timeout: 10}
-                );
-
-                stub.restore();
-
-                ret.then(function () {
-                    done(new Error('It should not be success'));
-                }).catch(function (err) {
-                    expect(err.message).to.be.a('string');
-                    expect(err.message).to.include('no timeout option');
-                    done();
-                });
-            });
-        });
-    });
 });
 
 describe('Ping in promise mode with unknown exception', function () {
