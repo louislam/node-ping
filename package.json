@@ -22,7 +22,7 @@
   ],
   "name": "@louislam/ping",
   "description": "a simple wrapper for ping",
-  "version": "0.4.4-mod.2",
+  "version": "0.4.4-mod.0",
   "homepage": "http://github.com/danielzzz/node-ping",
   "license": "MIT",
   "repository": {
@@ -33,7 +33,7 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "command-exists": "~1.2.9",
+    "command-exists": "~1.2.9"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.10",
