@@ -1,4 +1,18 @@
 {
+    "openbsd_en_v6_sample1": {
+        "inputHost": "whatever",
+        "host": "one.one.one.one",
+        "numeric_host": "2606:4700:4700::1111",
+        "alive": true,
+        "output": "PING one.one.one.one (2606:4700:4700::1111): 56 data bytes\n64 bytes from 2606:4700:4700::1111: icmp_seq=0 hlim=59 time=14.796 ms\n64 bytes from 2606:4700:4700::1111: icmp_seq=1 hlim=59 time=13.450 ms\n64 bytes from 2606:4700:4700::1111: icmp_seq=2 hlim=58 time=13.285 ms\n64 bytes from 2606:4700:4700::1111: icmp_seq=3 hlim=59 time=13.245 ms\n\n--- one.one.one.one ping statistics ---\n4 packets transmitted, 4 packets received, 0.0% packet loss\nround-trip min/avg/max/std-dev = 13.245/13.694/14.796/0.641 ms",
+        "time": 14.796,
+        "times": [14.796, 13.45, 13.285, 13.245],
+        "min": "13.245",
+        "max": "14.796",
+        "avg": "13.694",
+        "packetLoss": "0.000",
+        "stddev": "0.641"
+    },
     "openbsd_en_sample1": {
         "inputHost": "whatever",
         "host": "google.com",
