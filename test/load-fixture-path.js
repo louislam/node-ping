@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-var path = require("path");
-var glob = require("glob");
+var path = require('path');
+var glob = require('glob');
 
 /**
  * Check out linux platform
  */
 function isLinux(p) {
-    var platforms = ["aix", "android", "linux"];
+    var platforms = ['aix', 'android', 'linux'];
 
     return platforms.indexOf(p) >= 0;
 }
@@ -16,7 +16,7 @@ function isLinux(p) {
  * Check out macos platform
  */
 function isMacOS(p) {
-    var platforms = ["darwin", "freebsd"];
+    var platforms = ['darwin', 'freebsd'];
 
     return platforms.indexOf(p) >= 0;
 }
@@ -25,7 +25,7 @@ function isMacOS(p) {
  * Check out openbsd platform
  */
 function isOpenBSD(p) {
-    var platforms = ["openbsd"];
+    var platforms = ['openbsd'];
 
     return platforms.indexOf(p) >= 0;
 }
@@ -41,22 +41,22 @@ module.exports = function (platform) {
     var dirname = null;
 
     if (isLinux(platform)) {
-        dirname = "linux";
+        dirname = 'linux';
     } else if (isMacOS(platform)) {
-        dirname = "macos";
+        dirname = 'macos';
     } else if (isWindow(platform)) {
-        dirname = "window";
+        dirname = 'window';
     } else if (isOpenBSD(platform)) {
-        dirname = "openbsd";
+        dirname = 'openbsd';
     }
 
     var currentDirectory = path.dirname(__filename);
 
-    var targetDirectory = [currentDirectory, "fixture"];
+    var targetDirectory = [currentDirectory, 'fixture'];
     if (dirname) {
         targetDirectory.push(dirname);
     }
-    targetDirectory = targetDirectory.concat(["**", "*.txt"]);
+    targetDirectory = targetDirectory.concat(['**', '*.txt']);
     targetDirectory = path.posix.join.apply(path.posix, targetDirectory);
 
     return glob.sync(targetDirectory);
