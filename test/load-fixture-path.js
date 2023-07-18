@@ -22,6 +22,15 @@ function isMacOS(p) {
 }
 
 /**
+ * Check out openbsd platform
+ */
+function isOpenBSD(p) {
+    var platforms = ['openbsd'];
+
+    return platforms.indexOf(p) >= 0;
+}
+
+/**
  * Check out window platform
  */
 function isWindow(p) {
@@ -37,6 +46,8 @@ module.exports = function (platform) {
         dirname = 'macos';
     } else if (isWindow(platform)) {
         dirname = 'window';
+    } else if (isOpenBSD(platform)) {
+        dirname = 'openbsd';
     }
 
     var currentDirectory = path.dirname(__filename);

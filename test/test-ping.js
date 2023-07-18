@@ -22,6 +22,7 @@ var PLATFORMS = [
     // 'aix',
     'android',
     'linux',
+    'openbsd',
 ];
 var PLATFORM_TO_EXTRA_ARGUMENTS = {
     window: ['-n', '2'],
@@ -29,6 +30,7 @@ var PLATFORM_TO_EXTRA_ARGUMENTS = {
     freebsd: ['-c', '2'],
     android: ['-c', '2'],
     linux: ['-c', '2'],
+    openbsd: ['-c', '2'],
 };
 
 var pathToAnswerKey = function (p) {
