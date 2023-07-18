@@ -26,6 +26,7 @@ var PLATFORMS = [
     // 'aix',
     'android',
     'linux',
+    'openbsd',
 ];
 var PLATFORM_TO_EXTRA_ARGUMENTS = {
     window: ['-n', '2'],
@@ -33,14 +34,13 @@ var PLATFORM_TO_EXTRA_ARGUMENTS = {
     freebsd: ['-c', '2'],
     android: ['-c', '2'],
     linux: ['-c', '2'],
+    openbsd: ['-c', '2'],
 };
 
 var pathToAnswerKey = function (p) {
     var basename = path.posix.basename(p, '.txt');
     var dirname = path.posix.basename(path.posix.dirname(p));
-    var osname = path.posix.basename(
-        path.posix.dirname(path.posix.dirname(p))
-    );
+    var osname = path.posix.basename(path.posix.dirname(path.posix.dirname(p)));
 
     return [osname, dirname, basename].join('_');
 };
@@ -70,7 +70,9 @@ var createTestCase = function (platform, pingExecution) {
 
         before(function () {
             stubs.push(
-                sinon.stub(os, 'platform').callsFake(function () { return platform; })
+                sinon.stub(os, 'platform').callsFake(function () {
+                    return platform;
+                })
             );
         });
 
@@ -82,40 +84,31 @@ var createTestCase = function (platform, pingExecution) {
 
         describe('runs with default config', function () {
             fixturePaths.forEach(function (fp) {
-                it(
-                    util.format('Using |%s|', pathToAnswerKey(fp)),
-                    function () {
-                        return pingExecution(fp);
-                    }
-                );
+                it(util.format('Using |%s|', pathToAnswerKey(fp)), function () {
+                    return pingExecution(fp);
+                });
             });
         });
 
         describe('runs with custom config', function () {
             fixturePaths.forEach(function (fp) {
-                it(
-                    util.format('Using |%s|', pathToAnswerKey(fp)),
-                    function () {
-                        return pingExecution(fp, {
-                            timeout: 10,
-                            extra: PLATFORM_TO_EXTRA_ARGUMENTS[platform],
-                        });
-                    }
-                );
+                it(util.format('Using |%s|', pathToAnswerKey(fp)), function () {
+                    return pingExecution(fp, {
+                        timeout: 10,
+                        extra: PLATFORM_TO_EXTRA_ARGUMENTS[platform],
+                    });
+                });
             });
         });
 
         describe('runs with custom config with default gone', function () {
             fixturePaths.forEach(function (fp) {
-                it(
-                    util.format('Using |%s|', pathToAnswerKey(fp)),
-                    function () {
-                        return pingExecution(fp, {
-                            timeout: false,
-                            extra: PLATFORM_TO_EXTRA_ARGUMENTS[platform],
-                        });
-                    }
-                );
+                it(util.format('Using |%s|', pathToAnswerKey(fp)), function () {
+                    return pingExecution(fp, {
+                        timeout: false,
+                        extra: PLATFORM_TO_EXTRA_ARGUMENTS[platform],
+                    });
+                });
             });
         });
     });
@@ -124,10 +117,21 @@ var createTestCase = function (platform, pingExecution) {
 describe('ping timeout and deadline options', function () {
     describe('on linux platform', function () {
         beforeEach(function () {
-            this.platformStub = sinon.stub(os, 'platform').callsFake(function () { return 'linux'; });
-            const fixturePath = path.join(__dirname, 'fixture',
-                'linux', 'en', 'sample1.txt');
-            this.spawnStub = sinon.stub(cp, 'spawn').callsFake(mockOutSpawn(fixturePath));
+            this.platformStub = sinon
+                .stub(os, 'platform')
+                .callsFake(function () {
+                    return 'linux';
+                });
+            const fixturePath = path.join(
+                __dirname,
+                'fixture',
+                'linux',
+                'en',
+                'sample1.txt'
+            );
+            this.spawnStub = sinon
+                .stub(cp, 'spawn')
+                .callsFake(mockOutSpawn(fixturePath));
         });
 
         afterEach(function () {
@@ -136,24 +140,43 @@ describe('ping timeout and deadline options', function () {
         });
 
         it('are forwarded to the ping binary', function () {
-            return ping.promise.probe('whatever', {
-                timeout: 47,
-                deadline: 83,
-            }).then(function () {
-                const spawnArgs = this.spawnStub.getCalls()[0].args;
-                const pingArgs = spawnArgs[1];
-                expect(pingArgs[pingArgs.indexOf('-W') + 1]).to.equal('47');
-                expect(pingArgs[pingArgs.indexOf('-w') + 1]).to.equal('83');
-            }.bind(this));
+            return ping.promise
+                .probe('whatever', {
+                    timeout: 47,
+                    deadline: 83,
+                })
+                .then(
+                    function () {
+                        const spawnArgs = this.spawnStub.getCalls()[0].args;
+                        const pingArgs = spawnArgs[1];
+                        expect(pingArgs[pingArgs.indexOf('-W') + 1]).to.equal(
+                            '47'
+                        );
+                        expect(pingArgs[pingArgs.indexOf('-w') + 1]).to.equal(
+                            '83'
+                        );
+                    }.bind(this)
+                );
         });
     });
 
     describe('on windows platform', function () {
         beforeEach(function () {
-            this.platformStub = sinon.stub(os, 'platform').callsFake(function () { return 'window'; });
-            const fixturePath = path.join(__dirname, 'fixture',
-                'window', 'en', 'sample1.txt');
-            this.spawnStub = sinon.stub(cp, 'spawn').callsFake(mockOutSpawn(fixturePath));
+            this.platformStub = sinon
+                .stub(os, 'platform')
+                .callsFake(function () {
+                    return 'window';
+                });
+            const fixturePath = path.join(
+                __dirname,
+                'fixture',
+                'window',
+                'en',
+                'sample1.txt'
+            );
+            this.spawnStub = sinon
+                .stub(cp, 'spawn')
+                .callsFake(mockOutSpawn(fixturePath));
         });
 
         afterEach(function () {
@@ -162,21 +185,35 @@ describe('ping timeout and deadline options', function () {
         });
 
         it('results in an error as deadline is not supported', function () {
-            return ping.promise.probe('whatever', {
-                timeout: 47,
-                deadline: 83,
-            }).then(function () {
-                throw new Error('deadline should result in an error');
-            }).catch(function () {});
+            return ping.promise
+                .probe('whatever', {
+                    timeout: 47,
+                    deadline: 83,
+                })
+                .then(function () {
+                    throw new Error('deadline should result in an error');
+                })
+                .catch(function () {});
         });
     });
 
     describe('on mac platform', function () {
         beforeEach(function () {
-            this.platformStub = sinon.stub(os, 'platform').callsFake(function () { return 'freebsd'; });
-            const fixturePath = path.join(__dirname, 'fixture',
-                'macos', 'en', 'sample1.txt');
-            this.spawnStub = sinon.stub(cp, 'spawn').callsFake(mockOutSpawn(fixturePath));
+            this.platformStub = sinon
+                .stub(os, 'platform')
+                .callsFake(function () {
+                    return 'freebsd';
+                });
+            const fixturePath = path.join(
+                __dirname,
+                'fixture',
+                'macos',
+                'en',
+                'sample1.txt'
+            );
+            this.spawnStub = sinon
+                .stub(cp, 'spawn')
+                .callsFake(mockOutSpawn(fixturePath));
         });
 
         afterEach(function () {
@@ -185,15 +222,23 @@ describe('ping timeout and deadline options', function () {
         });
 
         it('are forwarded to the ping binary', function () {
-            return ping.promise.probe('whatever', {
-                timeout: 47,
-                deadline: 83,
-            }).then(function () {
-                const spawnArgs = this.spawnStub.getCalls()[0].args;
-                const pingArgs = spawnArgs[1];
-                expect(pingArgs[pingArgs.indexOf('-W') + 1]).to.equal('47000');
-                expect(pingArgs[pingArgs.indexOf('-t') + 1]).to.equal('83');
-            }.bind(this));
+            return ping.promise
+                .probe('whatever', {
+                    timeout: 47,
+                    deadline: 83,
+                })
+                .then(
+                    function () {
+                        const spawnArgs = this.spawnStub.getCalls()[0].args;
+                        const pingArgs = spawnArgs[1];
+                        expect(pingArgs[pingArgs.indexOf('-W') + 1]).to.equal(
+                            '47000'
+                        );
+                        expect(pingArgs[pingArgs.indexOf('-t') + 1]).to.equal(
+                            '83'
+                        );
+                    }.bind(this)
+                );
         });
     });
 });
@@ -268,7 +313,9 @@ describe('Ping ipv6 on MAC OS', function () {
 
     before(function () {
         stubs.push(
-            sinon.stub(os, 'platform').callsFake(function () { return platform; })
+            sinon.stub(os, 'platform').callsFake(function () {
+                return platform;
+            })
         );
     });
 
