@@ -24,7 +24,7 @@
   ],
   "name": "@louislam/ping",
   "description": "a simple wrapper for ping",
-  "version": "0.4.4-mod.0",
+  "version": "0.4.4-mod.1",
   "homepage": "http://github.com/danielzzz/node-ping",
   "license": "MIT",
   "repository": {
